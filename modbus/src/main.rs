@@ -22,7 +22,7 @@ struct Args {
 enum Subcommands {
     ReadRegister {
         #[clap(short, long, action)]
-        address: u16,
+        register: u16,
         #[clap(short, long, action)]
         kind: RegisterKind,
         #[clap(short, long, action)]
@@ -78,7 +78,7 @@ async fn main() {
 
     match command {
         Subcommands::ReadRegister {
-            address,
+            register,
             kind,
             watch,
             unit_id,
@@ -96,7 +96,7 @@ async fn main() {
             };
 
             loop {
-                let result = match read_modbus(&addr, address, count, kind, unit_id).await {
+                let result = match read_modbus(&addr, register, count, kind, unit_id).await {
                     Ok(result) => result,
                     Err(error) => {
                         log::error!("Received error. Aborting: {error}");
